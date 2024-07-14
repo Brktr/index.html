@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3.js Çubuk Grafik</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .bar {
+            fill: steelblue;
+        }
+    </style>
+</head>
+<body>
+    <svg width="600" height="400"></svg>
+    <script>
+        const data = [30, 86, 168, 281, 303, 365];
+        const svg = d3.select("svg");
+        const width = +svg.attr("width");
+        const height = +svg.attr("height");
+        const x = d3.scaleBand()
+                    .domain(d3.range(data.length))
+                    .range([0, width])
+                    .padding(0.1);
+        const y = d3.scaleLinear()
+                    .domain([0, d3.max(data)])
+                    .nice()
+                    .range([height, 0]);
+        svg.selectAll(".bar")
+           .data(data)
+           .enter().append("rect")
+           .attr("class", "bar")
+           .attr("x", (d, i) => x(i))
+           .attr("y", d => y(d))
+           .attr("width", x.bandwidth())
+           .attr("height", d => height - y(d));
+    </script>
+</body>
+</html>
